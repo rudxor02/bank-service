@@ -61,7 +61,36 @@ int main(int argc, char ** argv) {
 		// params not matched
 		exitErrorMysql(&mysql);
 		exit(0);
+	}	
+    else if (atoi((mysql_fetch_row(sql_result))[2]) < atoi(money)) {
+		//balance < money : lack of money
+		printf("Lack of Money : Failed\n");
+		exitErrorMysql(&mysql);
+		exit(0);
 	}
+	else {
+		//cmds for sender update, receiver update
+		char senderUpdateCmd[300];
+		char receiverUpdateCmd[300];
+
+		snprintf(senderUpdateCmd, 290,
+			"update %s set balance = balance - %s where acc_num = \'%s\'", TABLE_ACCOUNT, money, senderAccount);
+
+		mysql_query(&mysql, senderUpdateCmd);
+
+		if (mysql_affected_rows(&mysql) != 1) {
+			printf("SenderUpdate : Failed\n");
+			exitErrorMysql(&mysql);
+			exit(0);
+		}
+
+    }
+
+    //commit
+	mysql_query(&mysql, "COMMIT;");
+
+	mysql_close(&mysql);
+	return 1;
 
 
 }
