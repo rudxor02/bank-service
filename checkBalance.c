@@ -35,6 +35,26 @@ int main(int argc, char ** argv) {
 		printf("%s\n", mysql_error(&mysql));
 		exit(0);
 	}
+	//query construction
+	snprintf(cmd, 290, "select * from %s where userID = %s;", TABLE_ACCOUNT, userID);
+
+	//query, fetch
+	mysql_query(&mysql, cmd);
+	MYSQL_RES *sql_result = mysql_store_result(&mysql);
+	if (sql_result == NULL || mysql_affected_rows(&mysql) == 0) {
+		printf("CheckBalance Failed\n");
+		mysql_close(&mysql);
+		exit(0);
+	}
+
+	MYSQL_ROW sql_row;
+
+	sql_row = mysql_fetch_row(sql_result);
+	// db scheme : acc_num	userID	balance
+	printf("%s\n%s\n", sql_row[0], sql_row[2]);
+	printf("CheckBalance Success\n");
+	mysql_close(&mysql);
+	return 1;
 
 }
 

@@ -44,6 +44,25 @@ int main(int argc, char ** argv) {
 		exit(0);
 	}
 
+    //start transaction
+	mysql_query(&mysql, "START TRANSACTION;");
+
+	//query construction
+	snprintf(cmd, 490, 
+		"(select * from %s where userID = \'%s\' and acc_num = \'%s\') union (select * from %s where acc_num = \'%s\');", TABLE_ACCOUNT, userID, senderAccount, TABLE_ACCOUNT, receiverAccount);
+
+	//query, fetch
+	mysql_query(&mysql, cmd);
+	MYSQL_RES *sql_result = mysql_store_result(&mysql);
+
+	// db scheme : acc_num	userID	balance
+
+	if (sql_result == NULL || mysql_affected_rows(&mysql) != 2) {
+		// params not matched
+		exitErrorMysql(&mysql);
+		exit(0);
+	}
+
 
 }
 
