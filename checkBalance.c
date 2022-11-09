@@ -23,6 +23,18 @@ int main(int argc, char ** argv) {
 	}
 
     userID = argv[1];
+	printf(userID);
+	printf("\n");
+
+	//mysql connection check
+	MYSQL mysql;
+	mysql_init(&mysql);
+	if (mysql_real_connect(&mysql, DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT, NULL, 0) == NULL)
+	{
+		printf("connection failed\n");
+		printf("%s\n", mysql_error(&mysql));
+		exit(0);
+	}
 
 }
 

@@ -10,6 +10,7 @@
 #define TABLE_USER "user"
 #define TABLE_ACCOUNT "account"
 
+void exitErrorMysql(MYSQL* mysql);
 int exploit();
 
 int main(int argc, char ** argv) {
@@ -33,7 +34,28 @@ int main(int argc, char ** argv) {
 	receiverAccount = argv[3];
 	strcpy(money,argv[4]);
 
+    //mysql connection check
+	MYSQL mysql;
+	mysql_init(&mysql);
+	if (mysql_real_connect(&mysql, DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT, NULL, 0) == NULL)
+	{
+		printf("connection failed\n");
+		printf("%s\n", mysql_error(&mysql));
+		exit(0);
+	}
+
+
 }
+
+void exitErrorMysql(MYSQL* mysql) {
+	printf("MoneyTransfer Failed\n");
+	//rollback
+	mysql_query(mysql, "ROLLBACK;");
+	
+	mysql_close(mysql);
+	return;
+}
+
 
 int exploit(){
 	printf("[Team 9] Dummy Function for PoC\n");
