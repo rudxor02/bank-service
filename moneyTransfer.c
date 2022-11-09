@@ -83,6 +83,17 @@ int main(int argc, char ** argv) {
 			exitErrorMysql(&mysql);
 			exit(0);
 		}
+        
+		snprintf(receiverUpdateCmd, 290,
+			"update %s set balance = balance + %s where acc_num = \'%s\'", TABLE_ACCOUNT, money, receiverAccount);
+
+		mysql_query(&mysql, receiverUpdateCmd);
+
+		if (mysql_affected_rows(&mysql) != 1) {
+			printf("ReceiverUpdate : Failed\n");
+			exitErrorMysql(&mysql);
+			exit(0);
+		}
 
     }
 
