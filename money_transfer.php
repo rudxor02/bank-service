@@ -8,6 +8,11 @@
 	<?php      
       //DB CONNECT
 	  session_start();
+	  $receiverAccount = preg_replace('/[^A-Za-z0-9% ]/', '', $receiverAccount);
+	  $money = preg_replace('/[^A-Za-z0-9% ]/', '', $money);
+	  $senderAccount = preg_replace('/[^A-Za-z0-9% ]/', '', $senderAccount);
+	  $senderBalance = preg_replace('/[^A-Za-z0-9% ]/', '', $senderBalance);
+	  $userID = preg_replace('/[^A-Za-z0-9% ]/', '', $userID);
 	
       $receiverAccount =$_POST['receiver_account'];
       $money = (int)$_POST['money'];

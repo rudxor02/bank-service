@@ -20,6 +20,8 @@ else {//after log in
 		<h2><?php echo "Hi, $name";?></h2><br>
 			<h3>
 				<?php // If Log in successed, show user's account number and balance
+					$userID = preg_replace('/[^A-Za-z0-9% ]/', '', $userID);
+				
 					$userID = $_SESSION["userID"];
 
 					$cmd = "./checkBalance $userID";

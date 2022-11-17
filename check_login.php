@@ -12,6 +12,9 @@
       $id = $_POST['id'];
       $userpass = $_POST['pw'];
       
+	  $id = preg_replace('/[^A-Za-z0-9% ]/', '', $id);
+      $userpass = preg_replace('/[^A-Za-z0-9% ]/', '', $userpass);
+	
       $cmd = "./login $id $userpass";
       //echo "<script>alert('$cmd')</script>";
       exec($cmd, $retArr, $retVal);
