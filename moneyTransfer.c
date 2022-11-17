@@ -30,6 +30,16 @@ int main(int argc, char ** argv) {
 		exit(0);
 	}
 
+	char specialChar[] = ",.?!@#$%^&*(){}[];'\"";
+    char* ptr;
+    for(int i = 1; i < argc; i++){
+        ptr = strpbrk(argv[i], specialChar);
+        if(ptr) {
+            printf("Special Character Detected\n");
+            exit(0);
+        }
+    }
+
 	userID = argv[1];
 	senderAccount = argv[2];
 	receiverAccount = argv[3];
