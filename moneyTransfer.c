@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <mysql.h>
+#include <limits.h>
 
 #define DB_HOST "localhost"
 #define DB_USER "root"
@@ -18,7 +19,7 @@ int main(int argc, char ** argv) {
 	char* userID;
 	char* senderAccount;
 	char* receiverAccount;
-	char money[16];
+	char money[8];
 
 	char lockCmd[100];
 	char cmd[500];
@@ -32,8 +33,8 @@ int main(int argc, char ** argv) {
 	userID = argv[1];
 	senderAccount = argv[2];
 	receiverAccount = argv[3];
-	strcpy(money,argv[4]);
-
+	 strcpy(money,argv[4]);
+	 
     //mysql connection check
 	MYSQL mysql;
 	mysql_init(&mysql);
@@ -62,12 +63,24 @@ int main(int argc, char ** argv) {
 		exitErrorMysql(&mysql);
 		exit(0);
 	}	
-    else if (atoi((mysql_fetch_row(sql_result))[2]) < atoi(money)) {
+    
+	long remittanceAmount;
+	char* pos;
+	remittanceAmount = strtoll(money, &pos, 10);
+	long balance;
+	balance = strtoll(mysql_fetch_row(sql_result)[2], &pos, 10);
+	
+	if(remittanceAmount == LLONG_MAX) {
+		printf("Remittance Limit Exceeded: Failed\n");
+		exitErrorMysql(&mysql);
+		exit(0);
+	}
+	else if (balance < remittanceAmount) {
 		//balance < money : lack of money
 		printf("Lack of Money : Failed\n");
 		exitErrorMysql(&mysql);
 		exit(0);
-	}
+	} 
 	else {
 		//cmds for sender update, receiver update
 		char senderUpdateCmd[300];
