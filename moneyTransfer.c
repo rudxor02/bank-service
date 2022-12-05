@@ -30,7 +30,7 @@ int main(int argc, char ** argv) {
 		exit(0);
 	}
 
-	char specialChar[] = ",.?!@#$%^&*(){}[];'\"";
+	char specialChar[] = ",.?!@#$%^&*(){}[]; +-'\"";
     char* ptr;
     for(int i = 1; i < argc; i++){
         ptr = strpbrk(argv[i], specialChar);
