@@ -19,7 +19,7 @@ int main(int argc, char ** argv) {
 	char* userID;
 	char* senderAccount;
 	char* receiverAccount;
-	char money[8];
+	char* money;
 
 	char lockCmd[100];
 	char cmd[500];
@@ -43,7 +43,7 @@ int main(int argc, char ** argv) {
 	userID = argv[1];
 	senderAccount = argv[2];
 	receiverAccount = argv[3];
-	 strcpy(money,argv[4]);
+	money = argv[4];
 	 
     //mysql connection check
 	MYSQL mysql;
