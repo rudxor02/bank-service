@@ -33,8 +33,6 @@ int main(int argc, char ** argv) {
     }
 
     userID = argv[1];
-	printf(userID);
-	printf("\n");
 
 	//mysql connection check
 	MYSQL mysql;
