@@ -55,6 +55,10 @@ int main(int argc, char ** argv) {
 		exit(0);
 	}
 
+	//lock table
+	snprintf(lockCmd, 90, "LOCK TABLES `%s` WRITE;", TABLE_ACCOUNT);
+	mysql_query(&mysql, lockCmd);
+
     //start transaction
 	mysql_query(&mysql, "START TRANSACTION;");
 
@@ -123,6 +127,9 @@ int main(int argc, char ** argv) {
     //commit
 	mysql_query(&mysql, "COMMIT;");
 
+	//unlock table
+	mysql_query(&mysql, "UNLOCK TABLES;");
+
 	mysql_close(&mysql);
 	return 1;
 
@@ -134,6 +141,9 @@ void exitErrorMysql(MYSQL* mysql) {
 	//rollback
 	mysql_query(mysql, "ROLLBACK;");
 	
+	//unlock table
+	mysql_query(mysql, "UNLOCK TABLES;");
+
 	mysql_close(mysql);
 	return;
 }
